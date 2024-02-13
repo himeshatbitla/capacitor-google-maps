@@ -274,13 +274,13 @@ export interface Marker {
     /**
      * Title, a short description of the overlay.
      */
-    /**
-   * The angle by which to rotate the marker, expressed clockwise in degrees
-   *
-   * @default 0
-   */
-    rotation?: number;
     title?: string;
+    /**
+     * The angle by which to rotate the marker, expressed clockwise in degrees
+     *
+     * @default 0
+     */
+    rotation?: number;
     /**
      * Snippet text, shown beneath the title in the info window when selected.
      */
