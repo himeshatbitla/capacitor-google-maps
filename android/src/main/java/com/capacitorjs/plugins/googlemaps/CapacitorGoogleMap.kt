@@ -173,44 +173,90 @@ class CapacitorGoogleMap(
         }
     }
 
-    fun addMarkers(
-            newMarkers: List<CapacitorGoogleMapMarker>,
-            callback: (ids: Result<List<String>>) -> Unit
-    ) {
-        try {
-            googleMap ?: throw GoogleMapNotAvailable()
-            val markerIds: MutableList<String> = mutableListOf()
+    fun updateMarker(
+    markerId: String,
+    marker: CapacitorGoogleMapMarker,
+    callback: (Result<Boolean>) -> Unit
+) {
+    try {
+        googleMap ?: throw GoogleMapNotAvailable()
 
-            CoroutineScope(Dispatchers.Main).launch {
-                newMarkers.forEach {
-                    val markerOptions: Deferred<MarkerOptions> =
-                            CoroutineScope(Dispatchers.IO).async {
-                                this@CapacitorGoogleMap.buildMarker(it)
-                            }
-                    val googleMapMarker = googleMap?.addMarker(markerOptions.await())
-                    it.googleMapMarker = googleMapMarker
+        CoroutineScope(Dispatchers.Main).launch {
+            val marker1 = markers[markerId]
 
-                    if (googleMapMarker != null) {
-                        if (clusterManager != null) {
-                            googleMapMarker.remove()
-                        }
+            if (marker1 != null) {
+                //fix this
 
-                        markers[googleMapMarker.id] = it
-                        markerIds.add(googleMapMarker.id)
-                    }
+                // marker1.markerOptions?.rotation(marker.rotation)
+                if(marker.rotation != null){
+                    val rotation = marker.rotation
                 }
+                else {
+                    val rotation = 0.0
+                }
+                marker1.markerOptions?.rotation(marker.rotation);
+                marker1.googleMapMarker?.rotation = marker.rotation
 
+                
+                marker1.markerOptions?.position(marker.coordinate)
+                marker1.googleMapMarker?.position = marker.coordinate
+               
+                // If using clusterManager, remove and re-add the marker
                 if (clusterManager != null) {
-                    clusterManager?.addItems(newMarkers)
+                    clusterManager?.removeItem(marker1)
+                    clusterManager?.addItem(marker1)
                     clusterManager?.cluster()
                 }
 
-                callback(Result.success(markerIds))
+                callback(Result.success(true))
+            } else {
+                callback(Result.failure(MarkerNotFoundError()))
             }
-        } catch (e: GoogleMapsError) {
-            callback(Result.failure(e))
         }
+    } catch (e: GoogleMapsError) {
+        callback(Result.failure(e))
     }
+}
+
+
+        fun addMarkers(
+                newMarkers: List<CapacitorGoogleMapMarker>,
+                callback: (ids: Result<List<String>>) -> Unit
+        ) {
+            try {
+                googleMap ?: throw GoogleMapNotAvailable()
+                val markerIds: MutableList<String> = mutableListOf()
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    newMarkers.forEach {
+                        val markerOptions: Deferred<MarkerOptions> =
+                                CoroutineScope(Dispatchers.IO).async {
+                                    this@CapacitorGoogleMap.buildMarker(it)
+                                }
+                        val googleMapMarker = googleMap?.addMarker(markerOptions.await())
+                        it.googleMapMarker = googleMapMarker
+
+                        if (googleMapMarker != null) {
+                            if (clusterManager != null) {
+                                googleMapMarker.remove()
+                            }
+
+                            markers[googleMapMarker.id] = it
+                            markerIds.add(googleMapMarker.id)
+                        }
+                    }
+
+                    if (clusterManager != null) {
+                        clusterManager?.addItems(newMarkers)
+                        clusterManager?.cluster()
+                    }
+
+                    callback(Result.success(markerIds))
+                }
+            } catch (e: GoogleMapsError) {
+                callback(Result.failure(e))
+            }
+        }
 
     fun addMarker(marker: CapacitorGoogleMapMarker, callback: (result: Result<String>) -> Unit) {
         try {

@@ -210,6 +210,36 @@ class CapacitorGoogleMapsPlugin : Plugin(), OnMapsSdkInitializedCallback {
         }
     }
 
+@PluginMethod
+fun updateMarker(call: PluginCall) {
+    try {
+        val id = call.getString("id")
+        id ?: throw InvalidMapIdError()
+
+        val markerId = call.getString("markerId")
+        markerId ?: throw InvalidArgumentsError("markerId is invalid or missing")
+
+        val markerObj = call.getObject("marker", null)
+        markerObj ?: throw InvalidArgumentsError("marker object is missing")
+
+        val marker = CapacitorGoogleMapMarker(markerObj)
+
+        val map = maps[id]
+        map ?: throw MapNotFoundError()
+
+        map.updateMarker(markerId, marker) { result ->
+            var id = result.getOrThrow();
+            var res = JSObject();
+            res.put("id", id);
+            call.resolve(res);
+        }
+    } catch (e: GoogleMapsError) {
+        handleError(call, e)
+    } catch (e: Exception) {
+        handleError(call, e)
+    }
+}
+
     @PluginMethod
     fun addMarker(call: PluginCall) {
         try {

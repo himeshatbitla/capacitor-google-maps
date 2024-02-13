@@ -127,6 +127,11 @@ export interface EnableClusteringArgs {
     id: string;
     minClusterSize?: number;
 }
+export interface MarkerUpdate {
+    id: string;
+    markerId: string;
+    marker: Marker;
+}
 export interface FitBoundsArgs {
     id: string;
     bounds: LatLngBounds;
@@ -143,6 +148,7 @@ export interface CapacitorGoogleMapsPlugin extends Plugin {
     addMarker(args: AddMarkerArgs): Promise<{
         id: string;
     }>;
+    updateMarker(args: MarkerUpdate): Promise<void>;
     addMarkers(args: AddMarkersArgs): Promise<{
         ids: string[];
     }>;

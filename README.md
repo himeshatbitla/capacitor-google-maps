@@ -17,7 +17,6 @@ To use the Google Maps SDK on any platform, API keys associated with an account 
 
 The Google Maps SDK supports the use of showing the users current location via `enableCurrentLocation(bool)`. To use this, Apple requires privacy descriptions to be specified in `Info.plist`:
 
-- `NSLocationAlwaysUsageDescription` (`Privacy - Location Always Usage Description`)
 - `NSLocationWhenInUseUsageDescription` (`Privacy - Location When In Use Usage Description`)
 
 Read about [Configuring `Info.plist`](https://capacitorjs.com/docs/ios/configuration#configuring-infoplist) in the [iOS Guide](https://capacitorjs.com/docs/ios) for more information on setting iOS permissions in Xcode.
@@ -56,13 +55,13 @@ To use certain location features, the SDK requires the following permissions to 
 
 This plugin will use the following project variables (defined in your app's `variables.gradle` file):
 
-- `googleMapsPlayServicesVersion`: version of `com.google.android.gms:play-services-maps` (default: `18.1.0`)
-- `googleMapsUtilsVersion`: version of `com.google.maps.android:android-maps-utils` (default: `3.4.0`)
-- `googleMapsKtxVersion`: version of `com.google.maps.android:maps-ktx` (default: `3.4.0`)
-- `googleMapsUtilsKtxVersion`: version of `com.google.maps.android:maps-utils-ktx` (default: `3.4.0`)
-- `kotlinxCoroutinesVersion`: version of `org.jetbrains.kotlinx:kotlinx-coroutines-android` and `org.jetbrains.kotlinx:kotlinx-coroutines-core` (default: `1.6.4`)
-- `androidxCoreKTXVersion`: version of `androidx.core:core-ktx` (default: `1.10.0`)
-- `kotlin_version`: version of `org.jetbrains.kotlin:kotlin-stdlib` (default: `1.8.20`)
+- `googleMapsPlayServicesVersion`: version of `com.google.android.gms:play-services-maps` (default: `18.2.0`)
+- `googleMapsUtilsVersion`: version of `com.google.maps.android:android-maps-utils` (default: `3.8.2`)
+- `googleMapsKtxVersion`: version of `com.google.maps.android:maps-ktx` (default: `5.0.0`)
+- `googleMapsUtilsKtxVersion`: version of `com.google.maps.android:maps-utils-ktx` (default: `5.0.0`)
+- `kotlinxCoroutinesVersion`: version of `org.jetbrains.kotlinx:kotlinx-coroutines-android` and `org.jetbrains.kotlinx:kotlinx-coroutines-core` (default: `1.7.3`)
+- `androidxCoreKTXVersion`: version of `androidx.core:core-ktx` (default: `1.12.0`)
+- `kotlin_version`: version of `org.jetbrains.kotlin:kotlin-stdlib` (default: `1.9.10`)
 
 
 ## Usage
@@ -299,6 +298,7 @@ export default MyMap;
 * [`removePolylines(...)`](#removepolylines)
 * [`destroy()`](#destroy)
 * [`setCamera(...)`](#setcamera)
+* [`updateMarker(...)`](#updatemarker)
 * [`getMapType()`](#getmaptype)
 * [`setMapType(...)`](#setmaptype)
 * [`enableIndoorMaps(...)`](#enableindoormaps)
@@ -546,6 +546,19 @@ setCamera(config: CameraConfig) => Promise<void>
 | Param        | Type                                                  |
 | ------------ | ----------------------------------------------------- |
 | **`config`** | <code><a href="#cameraconfig">CameraConfig</a></code> |
+
+--------------------
+
+
+### updateMarker(...)
+
+```typescript
+updateMarker(marker: Marker) => Promise<void>
+```
+
+| Param        | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`marker`** | <code><a href="#marker">Marker</a></code> |
 
 --------------------
 
@@ -930,6 +943,7 @@ A marker is an icon placed at a particular point on the map's surface.
 | ---------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
 | **`coordinate`** | <code><a href="#latlng">LatLng</a></code>                    | <a href="#marker">Marker</a> position                                                                                                                                                     |                    |       |
 | **`opacity`**    | <code>number</code>                                          | Sets the opacity of the marker, between 0 (completely transparent) and 1 inclusive.                                                                                                       | <code>1</code>     |       |
+| **`rotation`**   | <code>number</code>                                          | The angle by which to rotate the marker, expressed in degrees clockwise.                                                                                                                  | <code>0</code>     |       |
 | **`title`**      | <code>string</code>                                          | Title, a short description of the overlay.                                                                                                                                                |                    |       |
 | **`snippet`**    | <code>string</code>                                          | Snippet text, shown beneath the title in the info window when selected.                                                                                                                   |                    |       |
 | **`isFlat`**     | <code>boolean</code>                                         | Controls whether this marker should be flat against the Earth's surface or a billboard facing the camera.                                                                                 | <code>false</code> |       |

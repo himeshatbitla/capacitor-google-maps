@@ -83,7 +83,10 @@ class CapacitorGoogleMapMarker(fromJSONObject: JSONObject): ClusterItem {
     override fun getZIndex(): Float {
         return zIndex
     }
-
+// add method to update exisitng marker location
+    fun updateMarkerLocation(latLng: LatLng) {
+        googleMapMarker?.position = latLng
+    }
     private fun buildIconAnchorPoint(iconAnchor: CapacitorGoogleMapsPoint): CapacitorGoogleMapsPoint? {
         iconSize ?: return null
 

@@ -170,6 +170,11 @@ export class CapacitorGoogleMapsWeb extends WebPlugin {
         const bounds = this.getLatLngBounds(_args.bounds);
         map.fitBounds(bounds, _args.padding);
     }
+    async updateMarker(_args) {
+        const marker = this.maps[_args.id].markers[_args.markerId];
+        console.log("marker updating, inside google-maps web.ts");
+        marker.setPosition(new google.maps.LatLng(_args.marker.coordinate.lat, _args.marker.coordinate.lng));
+    }
     async addMarkers(_args) {
         const markerIds = [];
         const map = this.maps[_args.id];

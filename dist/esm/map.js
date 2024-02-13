@@ -216,6 +216,13 @@ export class GoogleMap {
         });
         return res.id;
     }
+    async updateMarker(markerId, marker) {
+        return CapacitorGoogleMaps.updateMarker({
+            id: this.id,
+            markerId,
+            marker
+        });
+    }
     /**
      * Adds multiple markers to the map
      *

@@ -207,6 +207,43 @@ public class CapacitorGoogleMapsPlugin: CAPPlugin, GMSMapViewDelegate {
         }
     }
 
+  @objc func updateMarkerPosition(_ call: CAPPluginCall) {
+        guard let markerId = call.getString("markerId"),
+              let newLat = call.getDouble("lat"),
+              let newLng = call.getDouble("lng") else {
+            call.reject("Invalid parameters")
+            return
+        }
+
+        do {
+            try googleMapExist()
+
+            DispatchQueue.main.async {
+                if let marker = self.markers[markerId] {
+                    let newCoordinate = CLLocationCoordinate2D(latitude: newLat, longitude: newLng)
+
+                    // Update marker position
+                    marker.markerOptions?.position = newCoordinate
+                    marker.googleMapMarker?.position = newCoordinate
+
+                    // If using clusterManager, remove and re-add the marker
+                    if let clusterManager = self.clusterManager {
+                        clusterManager.removeItem(marker)
+                        clusterManager.addItem(marker)
+                        clusterManager.cluster()
+                    }
+
+                    call.success(["result": true])
+                } else {
+                    call.reject("Marker not found")
+                }
+            }
+        } catch {
+            call.reject(error.localizedDescription)
+        }
+    }
+
+
     @objc func addMarkers(_ call: CAPPluginCall) {
         do {
             guard let id = call.getString("id") else {

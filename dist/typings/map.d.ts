@@ -23,6 +23,7 @@ export interface GoogleMapInterface {
     removePolylines(ids: string[]): Promise<void>;
     destroy(): Promise<void>;
     setCamera(config: CameraConfig): Promise<void>;
+    updateMarker(marker: Marker): Promise<void>;
     /**
      * Get current map type
      */
@@ -119,6 +120,7 @@ export declare class GoogleMap {
      * @returns created marker id
      */
     addMarker(marker: Marker): Promise<string>;
+    updateMarker(markerId: string, marker: Marker): Promise<void>;
     /**
      * Adds multiple markers to the map
      *

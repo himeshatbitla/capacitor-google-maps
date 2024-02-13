@@ -15,6 +15,10 @@ export declare class LatLngBounds {
     contains(point: LatLng): Promise<boolean>;
     extend(point: LatLng): Promise<LatLngBounds>;
 }
+export interface MarkerUpdate {
+    markerId: string;
+    marker: Marker;
+}
 /**
  * An interface representing a pair of latitude and longitude coordinates.
  */
@@ -271,6 +275,12 @@ export interface Marker {
      * @default 1
      */
     opacity?: number;
+    /**
+     * The angle by which to rotate the marker, expressed in degrees clockwise.
+     *
+     * @default 0
+     */
+    rotation?: number;
     /**
      * Title, a short description of the overlay.
      */
